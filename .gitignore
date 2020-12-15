@@ -1,7 +1,2 @@
 /.DS_Store
 /.vscode
-/components
-/connect_to_db.php
-/fetch_all.php
-/index.php
-/search.php
