@@ -1,0 +1,111 @@
+.list-group-item h5 {
+  font-weight: 400;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.time-line .list-group-item {
+  align-items: center;
+  display: flex;
+  height: 3.75rem;
+  justify-content: center;
+}
+
+.timechart-container {
+  display: flex;
+  padding-left: 6.25rem;
+}
+
+.time-line {
+  height: 37.5rem;
+  left: 0;
+  overflow-y: scroll;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.time-line section:first-child {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.bubble {
+  border: 1px solid;
+  box-sizing: border-box;
+  display: block;
+  height: calc(5px * 30);
+  min-width: 6.25rem;
+}
+
+.timechart-daliy {
+  height: calc(60px * 24);
+  min-width: 6.25rem;
+  position: relative;
+}
+
+.timechart-daliy li {
+  position: absolute;
+}
+
+.timechart-daliy li:first-child {
+  top: calc(5px * 60 * 0 + 42px);
+}
+
+.timechart-daliy li:nth-child(2) {
+  top: calc(5px * 60 * 2 + 42px);
+}
+
+.timechart-daliy li:nth-child(3) {
+  top: calc(5px * 60 * 4 + 42px);
+}
+
+.line-occupying {
+  font-size: .875rem;
+  padding: .5rem;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.timeline li:not(:first-child) {
+  align-items: center;
+  display: flex;
+  font-size: 1.5rem;
+  height: 300px;
+  justify-content: center;
+}
+
+.timeline li h5 {
+  margin-bottom: 0;
+  padding: .5rem;
+  text-align: center;
+}
+
+.scale section {
+  min-width: 6.25rem;
+}
+
+.scale {
+  display: flex;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.gantt-chart {
+  border: 1px solid #ddd;
+  height: 85vh;
+  margin: .9375rem;
+  overflow: scroll;
+  position: relative;
+  width: calc(31.25rem + 2px);
+}
+
+.scale ul li:first-child {
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
