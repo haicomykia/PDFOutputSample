@@ -21,7 +21,7 @@
         <div class="input-group mb-3">
           <input type="search" name="client_cd" id="client" class="form-control">
           <div class="input-group-append">
-            <button class="btn btn-secondary" type="button"  data-toggle="modal" data-target="#client-search-modal">
+            <button class="btn btn-secondary" type="button"  data-toggle="modal" data-target="#client-search-modal" data-receiver-id="id" data-sent-data-id="client">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
                 <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
@@ -94,9 +94,11 @@
   <script src="./js/script.js"></script>
   <script>
     $(function(){
-      $("#client-search-modal").on('show.bs.modal', function(){
-        $("#id").val($("#client").val());
-        search($("#id").val());
+      $("#client-search-modal").on('show.bs.modal', function(e){
+        const receiver = $(e.relatedTarget).data('receiver-id');
+        const clientId = $(e.relatedTarget).data('sent-data-id');
+        $("#" + receiver).val($("#" + clientId).val());
+        search($("#" + receiver).val());
       });
 
       $(".btn-search").on('click', function(){
