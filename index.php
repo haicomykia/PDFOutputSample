@@ -35,6 +35,20 @@
         <input type="texts" name="client_name" id="client-name" class="form-control" readonly value="">
       </div>
     </div>
+    <div class="row">
+      <div class="col-8 form-inline">
+        <input type="number" name="a" id="" class="q form-control" min="0" step="0.01">
+        <span class="mx-3">×</span>
+        <input type="number" name="b" id="" class="price form-control" min="0" step="0.01">
+        <span class="mx-3">=</span>
+        <input type="number" name="ab" id="" class="total form-control readonly" readonly>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-info ml-3 set-rounding" type="button" data-rounding="1">四捨五入</button>
+        <button class="btn btn-info ml-3 set-rounding" type="button" data-rounding="2">切り上げ</button>
+        <button class="btn btn-info ml-3 set-rounding" type="button" data-rounding="3">切り捨て</button>
+      </div>
+    </div>
   </div>
   <!-- Modal -->
   <div class="modal fade" id="client-search-modal" tabindex="-1" role="dialog" aria-labelledby="client-search-modal-label" aria-hidden="true">
@@ -46,46 +60,6 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <div class="container">
-            <div class="row mb-3">
-              <label for="id" class="col-form-label col-2">ID</label>
-              <div class="col-10">
-                <input type="search" name="id" id="id" class="form-control">
-              </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col-12">
-                <button class="btn btn-search btn-info d-block mx-auto" type="button">検索</button>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-12">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>タイトル</th>
-                      <th>作者</th>
-                      <th>出版日</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="d-none template-tr original" id="last-tr">
-                      <th><input type="text" name="id" class="form-control-plaintext" readonly></th>
-                      <td><input type="text" name="title" class="form-control-plaintext" readonly></td>
-                      <td><input type="text" name="author" class="form-control-plaintext" readonly></td>
-                      <td><input type="text" name="publish-date" class="form-control-plaintext" readonly></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-        </div>
       </div>
     </div>
   </div>
@@ -94,54 +68,40 @@
   <script src="./js/script.js"></script>
   <script>
     $(function(){
-      $("#client-search-modal").on('show.bs.modal', function(e){
-        const receiver = $(e.relatedTarget).data('receiver-id');
-        const clientId = $(e.relatedTarget).data('sent-data-id');
-        $("#" + receiver).val($("#" + clientId).val());
-        search($("#" + receiver).val());
+      //sessionStorage.rounding = 1;
+      $("body").on('blur', '.price', function(){
+        spreadSheetCalc();
       });
 
-      $(".btn-search").on('click', function(){
-        search($("#id").val());
+      $(".set-rounding").on('click', function(){
+        sessionStorage.rounding = $(this).data('rounding');
+        spreadSheetCalc();
       });
     });
-  </script>
-  <script>
-    /**
-     * Ajax通信で部分一致検索を行う
-     * @param {string} id 書籍管理テーブル.ID
-     */
-    function search(id){
-      $.ajax({
-          url:'search.php',	// HTMLファイルからの相対パス
-          type: 'POST',
-          dataType: 'json',
-          data: {id: id}
-      })
-      .then(
-        function(data){
-          generateResultList(data);
-        }, 
-        function(){
 
-        }
-      );
+    // 選択した端数処理にて計算する
+    const calc = (q, price) => {
+      if (sessionStorage.rounding == null || sessionStorage.rounding == void 0) {
+        return null;
+      }
+
+      if (sessionStorage.rounding === '1') {
+        return Math.round(q * price);
+      } else if(sessionStorage.rounding === '2') {
+        return Math.ceil(q * price);
+      }
+      return Math.floor(q * price);
     }
-    /**
-     * 検索結果のリストを生成する
-     * @param {object} results 検索結果のJSON
-     */
-    function generateResultList(results){
-      $(".template-tr").not(".original").remove();
-      $.each(results, function(index, result){
-        const $row = $("#last-tr").clone(true).removeClass('d-none original');
-        $row.find('[name="id"]').val(result.id);
-        $row.find('[name="title"]').val(result.title);
-        $row.find('[name="author"]').val(result.author);
-        $row.find('[name="publish-date"]').val(result.date);
-        $("#last-tr").before($row);
-      });
-    }
+
+    // 端数処理が選択されていない場合はアラートを表示する
+    const spreadSheetCalc = () => {
+      const total = calc($(".q").val(), $(".price").val());
+      if (total == null) {
+        $(".total").addClass('is-invalid').val('');
+      } else {
+        $(".total").removeClass('is-invalid').val(total);
+      }
+    };
   </script>
 </body>
 </html>
