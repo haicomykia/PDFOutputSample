@@ -68,7 +68,7 @@
   <script src="./js/script.js"></script>
   <script>
     $(function(){
-      //sessionStorage.rounding = 1;
+      sessionStorage.removeItem('rounding');
       $("body").on('blur', '.price', function(){
         spreadSheetCalc();
       });
