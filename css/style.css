@@ -16,3 +16,12 @@
 .pdf-thumbnail {
   height: 8rem;
 }
+
+.img-thumbnail[src*=".svg"] {
+  width: 50%;
+}
+
+.embed-responsive-a4::before {
+  /* a4サイズの比率（w:h = 1:√2) */
+  padding-top: 141.4213%;
+}

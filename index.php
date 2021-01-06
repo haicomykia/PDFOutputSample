@@ -95,7 +95,9 @@
         <div class="row">
           <div class="col-3 d-flex justify-content-center">
             <!-- PDF -->
-            <img src="./img/pdf_icon.svg" alt="" class="img-thumbnail border-0">
+            <div class="embed-responsive embed-responsive-a4">
+              <embed src="./img/riyou.pdf#page=1" type="application/pdf" title="XXXXXX.pdf" class="embed-responsive-item">
+            </div>
           </div>
           <div class="col-9">
             <h5 class="font-weight-normal clearfix">
