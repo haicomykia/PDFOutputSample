@@ -8,3 +8,11 @@
 .col-8 .form-control {
   width: 10rem;
 }
+
+.flatpickr-input[readonly] {
+  background-color: #fff;
+}
+
+.pdf-thumbnail {
+  height: 8rem;
+}
