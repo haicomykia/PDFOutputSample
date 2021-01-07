@@ -135,14 +135,18 @@
   <script src="./js/script.js"></script>
   <script>
     $(function(){
-      $(".order-datepicker").flatpickr();
-      $(".delivery-datepicker").flatpickr();
-
-      $(".order-datepicker").on('change', function(){
-        const dateAry = $(this).val().split("-");
-        $(".delivery-datepicker").flatpickr({
-          minDate: new Date(dateAry[0], dateAry[1] - 1, dateAry[2]).fp_incr(1)
-        });
+      $(".delivery-datepicker").flatpickr({
+        minDate: new Date().fp_incr(1)
+      });
+      $(".order-datepicker").flatpickr({
+        defaultDate: "today",
+        onChange: function(selectedDates, dateStr){
+          console.log(dateStr);
+          const minDate = dateStr.split('-');
+          flatpickr(".delivery-datepicker", {
+            minDate: new Date(minDate[0], minDate[1] - 1, minDate[2]).fp_incr(1)
+          });
+        }
       });
 
       $(".btn-del-attachment").on('click', function(){
