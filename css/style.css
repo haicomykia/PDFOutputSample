@@ -25,3 +25,21 @@
   /* a4サイズの比率（w:h = 1:√2) */
   padding-top: 141.4213%;
 }
+
+.tablesorter-headerUnSorted {
+  background-image: url("../img/arrow-down-up.svg");
+  background-position: center right;
+  background-repeat: no-repeat;
+}
+
+.tablesorter-headerAsc {
+  background-image: url("../img/sort-alpha-down.svg");
+  background-position: center right;
+  background-repeat: no-repeat;
+}
+
+.tablesorter-headerDesc {
+  background-image: url("../img/sort-alpha-down-alt.svg");
+  background-position: center right;
+  background-repeat: no-repeat;
+}
