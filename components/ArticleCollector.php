@@ -27,18 +27,18 @@
 			$books = [];
 			try {
 				$pdo = $this->pdo();
-				$stmt = $pdo -> prepare("SELECT * FROM books;");
+				$stmt = $pdo -> prepare("SELECT * FROM articles;");
 				$stmt -> execute();
 				while($book = $stmt -> fetch(PDO::FETCH_ASSOC)){
 					$books[] = array(
-						'id' 						=> $book['id'],
-						'title' 				=> $book['title'],
-						'author' 				=> $book['author'],
-						'publisher' 		=> $book['publisher'],
-						'date' 					=> $book['date'],
-						'price' 				=> $book['price'],
-						'remarks' 			=> $book['remarks'],
-						'created' 			=> $book['created'],
+						'id' 					=> $book['id'],
+						'user_id' 		=> $book['user_id'],
+						'title' 			=> $book['title'],
+						'slug' 				=> $book['slug'],
+						'body' 				=> $book['body'],
+						'published' 	=> $book['published'],
+						'created'			=> $book['created'],
+						'modified' 		=> $book['modified']
 					);
 				}
 			} catch (Exception $e) {
