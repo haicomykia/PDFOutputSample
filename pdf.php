@@ -1,4 +1,5 @@
 <?php
+	require_once 'components/ArticleCollector.php';
 	require_once './vendor/tecnickcom/tcpdf/tcpdf.php';
 	require_once './vendor/autoload.php';
 
@@ -13,11 +14,13 @@
 		$pdf->SetMargins(0, 0, 0);
 		$pdf->SetCellPadding(0);
 		
-		$pdf->SetFont('kozminproregular'); // 日本語フォント
-		$pdf->setSourceFile('base.pdf');
+		$pdf->setSourceFile('./img/base.pdf');
 		$pdf->AddPage();
 		$tpl = $pdf->importPage(1); // テンプレートPDFの1ページ目
 		$pdf->useTemplate($tpl);
+
+		$pdf->SetFont('kozminproregular', '', 11);
+
 		// グリッドを引く
 		// for ($x = 10; $x < 210; $x += 10) {
 		// 	$pdf->Line($x, 0, $x, 297);
@@ -26,30 +29,23 @@
 		// 	$pdf->Line(0, $y, 210, $y);
 		// }
 
-		// 1行目
-		$pdf -> SetXY(24, 50);
-		$pdf -> Write(0, date('Y/m/d'));
-		$pdf -> SetXY(75, 50);
-		$pdf -> Write(0, '東山奈央のラジオ@リビング');
+		$ArticleCollector = new Article_Collector();
+		$articles = $ArticleCollector -> fetchAll();
 
-		// 2行目
-		$pdf -> SetXY(24, 56);
-		$pdf -> Write(0, date('Y/m/d'));
-		$pdf -> SetXY(75, 56);
-		$pdf -> Write(0, 'Pyxisの夜空の下deMeeting');
+		foreach($articles as $key => $article) {
+			$y = 50 + ($key * 6);
+			$pdf -> SetXY(24.5, $y);
+			$pdf -> Write(0, date('Y/m/d'));
 
-		// 3行目
-		$pdf -> SetXY(24, 62);
-		$pdf -> Write(0, date('Y/m/d'));
-		$pdf -> SetXY(75, 62);
-		$pdf -> Write(0, '内田真礼とお話しません？');
+			$pdf -> SetXY(53, $y);
+			$pdf -> Write(0, $article['title']);
 
-		// 4行目
-		$pdf -> SetXY(24, 68);
-		$pdf -> Write(0, date('Y/m/d'));
-		$pdf -> SetXY(75, 68);
-		$pdf -> Write(0, '石原夏織のCarry up?!');
+			$pdf -> SetXY(154, $y);
+			$pdf->Cell(33, 6, $key.'円', 0, 0, 'R');
+		}
 
+		$image = __DIR__.'/img/stamp.gif';
+		$pdf -> Image($image, 160, 90, 30, 0, 'GIF');
 		$file_name = date('ymd').'_sample.pdf';
 		$pdf->Output($file_name, 'I'); // 画面出力
 

@@ -27,7 +27,7 @@
 			$books = [];
 			try {
 				$pdo = $this->pdo();
-				$stmt = $pdo -> prepare("SELECT * FROM articles;");
+				$stmt = $pdo -> prepare("SELECT * FROM articles LIMIT 4;");
 				$stmt -> execute();
 				while($book = $stmt -> fetch(PDO::FETCH_ASSOC)){
 					$books[] = array(
