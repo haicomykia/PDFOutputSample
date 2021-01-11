@@ -29,7 +29,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '18381cd9575e67ff2698e35ed96c7bd1d7c06206',
+    'reference' => 'b6d7edf0bec836e192524f4e98c022d6433ac125',
     'name' => '__root__',
   ),
   'versions' => 
@@ -41,7 +41,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '18381cd9575e67ff2698e35ed96c7bd1d7c06206',
+      'reference' => 'b6d7edf0bec836e192524f4e98c022d6433ac125',
     ),
     'mpdf/mpdf' => 
     array (
@@ -91,6 +91,24 @@ private static $installed = array (
       array (
       ),
       'reference' => 'f2246c8669bd25834f5c264425eb0e250d7a9312',
+    ),
+    'setasign/fpdi-tcpdf' => 
+    array (
+      'pretty_version' => 'v2.3.0',
+      'version' => '2.3.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'f6711a95cba64db16e1a63e1b6195827a2150c93',
+    ),
+    'tecnickcom/tcpdf' => 
+    array (
+      'pretty_version' => '6.3.5',
+      'version' => '6.3.5.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '19a535eaa7fb1c1cac499109deeb1a7a201b4549',
     ),
   ),
 );

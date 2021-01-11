@@ -1,58 +1,58 @@
 <?php
-	require_once 'components/ArticleCollector.php';
+	require_once './vendor/tecnickcom/tcpdf/tcpdf.php';
+	require_once './vendor/autoload.php';
 
-	$ArticleCollector = new Article_Collector();
+	use setasign\Fpdi\TcpdfFpdi;
 
-	$articles = $ArticleCollector -> fetchAll();
-
-	$html_doc = <<< EOD
-	<!DOCTYPE html>
-		<html lang="ja">
-		<head>
-			<meta charset="UTF-8">
-			<link rel="stylesheet" href="./css/normalize.css" media="all">
-			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		</head>
-		<body>
-			<h1>PDF出力のテスト</h1>	
-			<p>こちらはテスト用のHTMLページです。特に意味はありません。</p>
-			<table>
-				<thead>
-					<tr><th>タイトル</th><th>本文</th></tr>
-				</thead>
-				<tbody>
-	EOD;
-	foreach($articles as $key => $article){
-		$html_doc .= '<tr><td>'.$article['title'].'</td>';
-		$html_doc .= '<td>'.$article['body'].'</td></tr>';
-	}
-	$html_doc .= <<< EOD
-				</tbody>
-			</table>
-		</body>
-		</html>
-	EOD;
-	
 	try {
-		require_once __DIR__.'/vendor/autoload.php';
-		$mpdf = new \Mpdf\Mpdf([
-			'fontdata' => [
-				'ipa' => [
-					'R' => 'ipaexm.ttf'
-				],
-				'format' => 'A4',
-				'orientation' => 'P',
-				'mode' 	=> 'ja'
-			]
-		]);
-	
-		$css = file_get_contents('./css/style.css');
-	
-		$mpdf->WriteHTML($css, \Mpdf\HTMLParserMode::HEADER_CSS);
-		$mpdf -> WriteHTML($html_doc, \Mpdf\HTMLParserMode::HTML_BODY);
-	
-		$file = __DIR__.'/test.pdf';
-		$mpdf -> Output($file, 'I');
+		$pdf = new TcpdfFpdi('P', 'mm', 'A4');
+		// ヘッダーの出力を無効化
+    $pdf->setPrintHeader(false);
+		// フッターの出力を無効化
+		$pdf->setPrintFooter(false);
+		$pdf->SetMargins(0, 0, 0);
+		$pdf->SetCellPadding(0);
+		
+		$pdf->SetFont('kozminproregular'); // 日本語フォント
+		$pdf->setSourceFile('base.pdf');
+		$pdf->AddPage();
+		$tpl = $pdf->importPage(1); // テンプレートPDFの1ページ目
+		$pdf->useTemplate($tpl);
+		// グリッドを引く
+		// for ($x = 10; $x < 210; $x += 10) {
+		// 	$pdf->Line($x, 0, $x, 297);
+		// }
+		// for ($y = 10; $y < 297; $y += 10) {
+		// 	$pdf->Line(0, $y, 210, $y);
+		// }
+
+		// 1行目
+		$pdf -> SetXY(24, 50);
+		$pdf -> Write(0, date('Y/m/d'));
+		$pdf -> SetXY(75, 50);
+		$pdf -> Write(0, '東山奈央のラジオ@リビング');
+
+		// 2行目
+		$pdf -> SetXY(24, 56);
+		$pdf -> Write(0, date('Y/m/d'));
+		$pdf -> SetXY(75, 56);
+		$pdf -> Write(0, 'Pyxisの夜空の下deMeeting');
+
+		// 3行目
+		$pdf -> SetXY(24, 62);
+		$pdf -> Write(0, date('Y/m/d'));
+		$pdf -> SetXY(75, 62);
+		$pdf -> Write(0, '内田真礼とお話しません？');
+
+		// 4行目
+		$pdf -> SetXY(24, 68);
+		$pdf -> Write(0, date('Y/m/d'));
+		$pdf -> SetXY(75, 68);
+		$pdf -> Write(0, '石原夏織のCarry up?!');
+
+		$file_name = date('ymd').'_sample.pdf';
+		$pdf->Output($file_name, 'I'); // 画面出力
+
 	} catch(\Mpdf\MpdfException $e){
 		echo $e -> getMessage();
 	}
