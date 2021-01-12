@@ -70,14 +70,12 @@
 
 	foreach($articles as $key => $article) {
 		$y = 50 + ($key * 6);
-		$pdf -> SetXY(24.5, $y);
-		$pdf -> Write(0, date('Y/m/d'));
-
-		$pdf -> SetXY(53, $y);
-		$pdf -> Write(0, $article['title']);
+		$pdf -> Text(24.5, $y, date('Y/m/d'));
+		$pdf -> Text(53, $y, $article['title']);
 
 		$pdf -> SetXY(154, $y);
 		$pdf->Cell(33, 6, $key.'円', 0, 0, 'R');
+
 	}
 
 	$image = __DIR__.'/img/stamp.gif';
