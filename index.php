@@ -30,7 +30,7 @@
     $(function(){
       let mutationObserver = new MutationObserver(function(){
         if (!$("#product-list li").length) {
-          mutationObserver.disconnect();
+          return;
         }
         $("#product-list li").each(function(index){
           $.ajax({
