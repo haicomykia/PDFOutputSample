@@ -42,8 +42,14 @@
 
 	$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./img/forms.xlsx');
 	$worksheet = $spreadsheet->getActiveSheet();
-	
+
 	$worksheet->fromArray($articles, null, 'B5');
+
+	$cloned = clone $spreadsheet->getSheetByName('Sheet1');
+	$cloned->setTitle('送付状');
+	$spreadsheet->addSheet($cloned);
+	$sheet = $spreadsheet -> setActiveSheetIndex(1);
+	$sheet->setCellValue('D3', 'AAAAAAA');
 	
 	// redirect output to client browser
 	header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
