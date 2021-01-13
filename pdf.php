@@ -31,16 +31,7 @@
 
 		$articles = [];
 		while($article = $stmt -> fetch(PDO::FETCH_ASSOC)){
-			$articles[] = array(
-				'id' 					=> $article['id'],
-				'user_id' 		=> $article['user_id'],
-				'title' 			=> $article['title'],
-				'slug' 				=> $article['slug'],
-				'body' 				=> $article['body'],
-				'published' 	=> $article['published'],
-				'created'			=> $article['created'],
-				'modified' 		=> $article['modified'],
-			);
+			$articles[] = $article;
 		}
 	} catch (Exception $e) {
 		var_dump($e -> getMessage());
