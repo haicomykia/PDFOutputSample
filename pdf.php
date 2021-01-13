@@ -43,8 +43,7 @@
 	$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./img/forms.xlsx');
 	$worksheet = $spreadsheet->getActiveSheet();
 	
-	$worksheet->getCell('A5')->setValue(date('Y/m/d'));
-	$worksheet->getCell('B5')->setValue($articles[0]['title']);
+	$worksheet->fromArray($articles, null, 'B5');
 	
 	// redirect output to client browser
 	header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
