@@ -49,7 +49,7 @@
 		$pdf->setPrintHeader(false);
 		$pdf->setPrintFooter(false);
 		$pdf->SetMargins(0, 0, 0);
-		$pdf->SetCellPaddings(2, 0, 2, 0);
+		$pdf->SetCellPaddings(4, 2, 4, 2);
 
 		$pdf->setSourceFile('./img/base.pdf');
 		$pdf->AddPage();
@@ -61,7 +61,7 @@
 		// for ($x = 20; $x < 210; $x += 20) {
 		// 	$pdf->Line($x, 0, $x, 297);
 		// }
-		// for ($y = 20; $y < 297; $y += 20) {
+		// for ($y = 5; $y < 297; $y += 5) {
 		// 	$pdf->Line(0, $y, 210, $y);
 		// }
 		
@@ -69,13 +69,13 @@
 		for ($j = 0; $j < NUMBER_OF_PRODUCTS_PER_PAGE; $j++) {
 			$idx = NUMBER_OF_PRODUCTS_PER_PAGE * $i + $j;
 			$article = $articles[$idx];
-			$y = 51 + ($j * 8);
+			$y = 51.5 + $j * 7.75;
 
 			$pdf -> SetXY(20, $y);
-			$pdf->setCellHeightRatio(2);  
-			$pdf -> Cell(32, 2, date('Y-m-d'), 0, 0, 'C');
+			$pdf->setCellHeightRatio(1);  
+			$pdf -> Cell(32, 1.5, date('Y-m-d'), 0, 0, 'C');
 	
-			$pdf -> SetXY(52, $y);
+			$pdf -> SetXY(51.5, $y);
 			$pdf -> Cell(105, 2, $article['title'], 0, 0, 'L');
 
 			// 次の要素がない場合は明細の作成を終える
@@ -91,9 +91,15 @@
 
 		// ページ数
 		$pdf -> SetXY(20, 272.5);
-		$pdf->SetCellPaddings(0, 0, 0, 0);
-		$pdf->setCellHeightRatio(1); 
+		$pdf -> SetCellPaddings(0, 0, 0, 0);
+		$pdf -> setCellHeightRatio(1); 
 		$pdf -> Cell(20, 2, sprintf("%d/%d", ($i + 1), ceil(count($articles) / NUMBER_OF_PRODUCTS_PER_PAGE)), 0, 0, 'L');
+
+		// 申請日
+		$pdf -> SetXY(160, 33.5);
+		$pdf -> SetCellPaddings(0, 0, 0, 0);
+		$pdf -> setCellHeightRatio(1);
+		$pdf -> Cell(25, 2, date('Y/m/d'), 0, 0, 'L');
 
 		$pdf -> lastPage();
 	}
