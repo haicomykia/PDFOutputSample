@@ -10,7 +10,7 @@
 		$conditions = [];
 		$bind_param = [];
 
-		if (isset($_GET['id'])) {
+		if (!empty($_GET['id'])) {
 			$ids = explode(",", $_GET['id']);
 			$conditions[] = sprintf("id IN (%s)", substr(str_repeat(",?", count($ids)), 1));
 			$bind_param[] = $ids;
@@ -20,10 +20,14 @@
 			$query .= ' WHERE ' . join(' OR ', $conditions);
 		}
 
-		$query .= "ORDER BY id ASC";
+		$query .= " ORDER BY id ASC";
 
 		$stmt = $pdo -> prepare($query);
-		$stmt -> execute($bind_param[0]);
+		if (count($conditions) > 0) {
+			$stmt -> execute($bind_param[0]);
+		} else {
+			$stmt -> execute();
+		}
 
 		$articles = [];
 		while($article = $stmt -> fetch(PDO::FETCH_ASSOC)){
@@ -47,7 +51,7 @@
 
 	$pdf = new TcpdfFpdi('P', 'mm', 'A4');
 
-	define('NUMBER_OF_PRODUCTS_PER_PAGE', 7);
+	define('NUMBER_OF_PRODUCTS_PER_PAGE', 6);
 
 	// ページごとの処理
 	for ($i = 0; $i < ceil(count($articles) / NUMBER_OF_PRODUCTS_PER_PAGE); $i++) { 
@@ -63,10 +67,10 @@
 		$pdf->SetFont('kozminproregular', '', 11);
 
 		// A4サイズの用紙にグリッドを引く
-		// for ($x = 10; $x < 210; $x += 10) {
+		// for ($x = 20; $x < 210; $x += 20) {
 		// 	$pdf->Line($x, 0, $x, 297);
 		// }
-		// for ($y = 10; $y < 297; $y += 10) {
+		// for ($y = 20; $y < 297; $y += 20) {
 		// 	$pdf->Line(0, $y, 210, $y);
 		// }
 		
@@ -93,6 +97,13 @@
 		EOM;
 		$pdf -> SetXY(54, $y);
 		$pdf -> MultiCell(170, 55, $here_doc, 0, 'J', false, 0 ,20,125, true, 0, false, true, 55, 'T', false);
+
+		// ページ数
+		$pdf -> SetXY(20, 272.5);
+		$pdf->SetCellPaddings(0, 0, 0, 0);
+		$pdf->setCellHeightRatio(1); 
+		$pdf -> Cell(20, 2, sprintf("%d/%d", ($i + 1), ceil(count($articles) / NUMBER_OF_PRODUCTS_PER_PAGE)), 0, 0, 'L');
+
 		$pdf -> lastPage();
 	}
 	// $image = __DIR__.'/img/stamp.gif';
