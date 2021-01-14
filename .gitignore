@@ -1,5 +1,6 @@
-/.DS_Store
-/.vscode
-/vendor
-/components/vendor
-/htdocs/components
+# see https://pikawaka.com/word/gitignore
+*
+!css/
+!components/ArticleControllor.php
+!js/
+!*.php
