@@ -42,7 +42,7 @@
 
 	$pdf = new TcpdfFpdi('P', 'mm', 'A4');
 
-	define('NUMBER_OF_PRODUCTS_PER_PAGE', 6);
+	define('NUMBER_OF_PRODUCTS_PER_PAGE', 5);
 
 	// ページごとの処理
 	for ($i = 0; $i < ceil(count($articles) / NUMBER_OF_PRODUCTS_PER_PAGE); $i++) { 
@@ -66,23 +66,16 @@
 		}
 		
 		// 明細に出力
-		for ($j = 0; $j < NUMBER_OF_PRODUCTS_PER_PAGE; $j++) {
-			$idx = NUMBER_OF_PRODUCTS_PER_PAGE * $i + $j;
-			$article = $articles[$idx];
-			$y = 51 + ($j * 8);
-
+		$sliced = array_slice($articles, NUMBER_OF_PRODUCTS_PER_PAGE * $i, NUMBER_OF_PRODUCTS_PER_PAGE);
+		foreach ($sliced as $key => $value) {
+			$y = 51 + ($key * 8);
 			$pdf -> SetXY(20, $y);
 			$pdf->setCellHeightRatio(2);  
 			$pdf -> Cell(32, 2, date('Y-m-d'), 0, 0, 'C');
-	
 			$pdf -> SetXY(52, $y);
-			$pdf -> Cell(105, 2, $article['title'], 0, 0, 'L');
-
-			// 次の要素がない場合は明細の作成を終える
-			if (!isset($articles[$idx + 1])) {
-				break;
-			}
+			$pdf -> Cell(105, 2, $value['title'], 0, 0, 'L');
 		}
+
 		$here_doc = <<< EOM
 		この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れてい
 		EOM;
